@@ -35,5 +35,5 @@ int main() {
     boost::system::error_code ec;
     const string message = "Hello from"s + username + '\n';
     boost::asio::write(socket, buffer(message), ec);
-    if (ec) cout << "Error: " << ec.what() << endl;
+    if (ec) cout << "Error: " << ec.value() << endl;
 }
