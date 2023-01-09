@@ -1,0 +1,11 @@
+
+if(Boost_FOUND)
+    include_directories(${Boost_INCLUDE_DIRS})
+    add_executable(server server.cpp)
+    add_executable(client client.cpp)
+    target_link_libraries(server ${Boost_LIBRARIES})
+    target_link_libraries(client ${Boost_LIBRARIES})
+    message("-- Boost link to: ${Boost_VERSION_STRING}")
+else()
+    message(FATAL_ERROR "Boost not found!")
+endif()
