@@ -15,7 +15,7 @@ struct Session : std::enable_shared_from_this<Session> {
             [self=shared_from_this()] (boost::system::error_code ec,
                                        std::size_t length) {
                 if (ec) {
-                    cout << "Error in connecting: " << ec.what() << endl;
+                    cout << "Error in connecting: " << ec.value() << endl;
                     return;
                 }
                 // do something on message
@@ -43,7 +43,7 @@ void serve(ip::tcp::acceptor& acceptor) {
     acceptor.async_accept([&acceptor](boost::system::error_code ec, ip::tcp::socket socket) {
         serve(acceptor);
         if (ec) {
-            cout << "Error in accepting new connections: " << ec.what() << endl;
+            cout << "Error in accepting new connections: " << ec.value() << endl;
             return;
         }
         auto session = std::make_shared<Session>(std::move(socket));
