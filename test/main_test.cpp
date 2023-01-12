@@ -17,7 +17,7 @@ TEST(Server, OneClientCanConnect) {
     Client client{ clientUsername , port };
     client.connect();
 
-    std::this_thread::sleep_for(1s);
+    std::this_thread::sleep_for(100ms);
 
     const auto connectedUsers = server.getConnectedUsers();
     ASSERT_EQ(connectedUsers.size(), 1);
@@ -29,7 +29,7 @@ TEST(Server, FiveClientCanConnect) {
     Server server{ 1895 };
     server.run();
 
-    std::set<const std::string> usernames {
+    std::set<std::string> usernames {
         "Patrick",
         "Kaelyn",
         "Kamari",
@@ -41,11 +41,11 @@ TEST(Server, FiveClientCanConnect) {
         client.connect();
     });    
 
-    std::this_thread::sleep_for(1s);
+    std::this_thread::sleep_for(100ms);
 
     const auto connectedUsers = server.getConnectedUsers();
     ASSERT_EQ(
         usernames,
-        std::set<const std::string>(connectedUsers.cbegin(), connectedUsers.cend())
+        std::set<std::string>(connectedUsers.cbegin(), connectedUsers.cend())
     );
 }
