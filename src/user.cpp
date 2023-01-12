@@ -5,6 +5,6 @@
 User::User(string username) :
     username{ std::move(username) } {}
 
-auto User::getUsername() -> string {
+auto User::getUsername() const -> string {
     return username;
 }
