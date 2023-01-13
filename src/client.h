@@ -11,12 +11,14 @@ using boost::asio::ip::tcp;
 using std::string;
 
 struct Client {
-    Client(string username, const int port);
+    Client(const string username, const int port);
     void connect();
+    const std::string getUsername();
+    void sendMessage(std::string message, std::string to);
 private:
     boost::asio::io_context ic;
     tcp::socket socket; 
-    string username;
+    const string username;
     const int port;
 };
 

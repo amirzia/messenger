@@ -6,19 +6,22 @@
 #include <boost/asio.hpp>
 #include "server.h"
 
-Server::Server(const unsigned port) :
-    acceptor{ ic, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port) } {
+Server::Server(const unsigned port, const int n_threads) :
+    acceptor{ ic, boost::asio::ip::tcp::endpoint(boost::asio::ip::tcp::v4(), port) },
+    n_threads{ n_threads },
+    ic{ n_threads } {
     serve(acceptor);
 }
 
 void Server::run() {
-    ic_thread = std::async(std::launch::async, [this]() {
-        ic.run();
+    std::generate_n(std::back_inserter(ic_threads), n_threads,
+        [self=this]() {
+            return std::async(std::launch::async, [self] { self->ic.run(); });
     });
 }
 
 void Server::stop() {
-    ic.stop();     
+    ic.stop();
 }
 
 Server::~Server() {
@@ -49,8 +52,21 @@ void Server::serve(boost::asio::ip::tcp::acceptor& acceptor) {
                 throw std::runtime_error{ "Error in getting register message from client" };
             
             self->userToSocket.insert({ username, std::move(socket) });
+            self->receive(username);
         });
     } catch (std::exception& e) {
         std::cerr << e.what() << std::endl;
+    }
+}
+
+void Server::receive(std::string username) {
+    auto& socket = userToSocket.at(username);
+    boost::system::error_code error_code;
+    std::string data;
+    while(true) {
+        boost::asio::read_until(socket, boost::asio::dynamic_buffer(data), "\0", error_code);
+        if (error_code) break;
+        std::cout << data << std::endl;
+        data.clear();
     }
 }
