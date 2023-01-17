@@ -2,12 +2,9 @@
 #include <thread>
 #include <chrono>
 
-int main() {
-    Server server{ 1895 };
+int main(int argc, char* argv[]) {
+    const auto port = static_cast<unsigned>(std::stoi(argv[1]));
+    Server server{ port };
     server.run();
-
-    using namespace std::chrono_literals;
-    std::this_thread::sleep_for(5s);
-
-    std::cout << "Conn users: " << server.getConnectedUsers().size();
+    while(true);
 }
