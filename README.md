@@ -2,6 +2,10 @@
 
 An asynchronous, multithreaded chat server using Boost.Asio.
 
+# Demo
+
+![demo](./demo.gif)
+
 ## Build and run
 
 To build the server, client, and test binaries issue:
