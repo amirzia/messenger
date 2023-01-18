@@ -1,3 +1,4 @@
+#include <algorithm>
 #include "header.h"
 
 Header::Header(HeaderType headerType_, std::string sender_, short bodySize) : 
