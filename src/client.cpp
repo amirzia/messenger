@@ -29,7 +29,7 @@ void Client::connect() {
 }
 
 Client::~Client() {
-    socket.close();
+    socket.shutdown(boost::asio::ip::tcp::socket::shutdown_both);
     ic.stop();
 }
 
