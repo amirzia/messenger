@@ -1,4 +1,4 @@
-# Messanger
+# Messenger
 
 An asynchronous, multithreaded chat server using Boost.Asio.
 
